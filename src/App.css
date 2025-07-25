@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  padding: 40px 20px;
+  margin: 20px auto;
+  cursor: pointer;
+  max-width: 600px;
+}
+
+.drop-zone:hover {
+  border-color: #333;
+}
+
+.video-container {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.timeline-slider {
+  margin: 15px 0;
+}
+
+.timeline-slider input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+.controls {
+  margin-top: 20px;
+}
+
+.controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
