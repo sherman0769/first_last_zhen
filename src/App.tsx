@@ -1,4 +1,4 @@
-import { useState, useRef, type ChangeEvent } from 'react';
+import { useState, useRef, useEffect, type ChangeEvent } from 'react';
 import './App.css';
 
 function App() {
@@ -7,6 +7,14 @@ function App() {
   const [currentTime, setCurrentTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    return () => {
+      if (videoSrc) {
+        URL.revokeObjectURL(videoSrc);
+      }
+    };
+  }, [videoSrc]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -38,6 +46,8 @@ function App() {
       if (context) {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
+        const originalTime = video.currentTime;
+        const wasPaused = video.paused;
 
         const drawImageAndDownload = () => {
           context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
@@ -50,6 +60,14 @@ function App() {
           link.click();
           document.body.removeChild(link);
           video.onseeked = null; // Clean up the event listener
+          video.currentTime = originalTime;
+          if (!wasPaused) {
+            // Resume playback if the video was playing
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise.catch(() => {});
+            }
+          }
         };
 
         video.onseeked = drawImageAndDownload;
